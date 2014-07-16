@@ -561,6 +561,13 @@ define(['jquery', 'jquery.dataTables', 'moment'], function($) {
 			ui.configureDataTables(availableColumns);
 			ui.hideLoadingMessage();
 		};
+		
+		// put setup method as jQuery function for later binding
+		$.fn.setUpCoursesWidget = function() {
+			return this.each(function(i, e) {
+				setUp(e);
+			});
+		};
 
 		$('.courses-widget-container').each(function(i, e){ setUp(e);});
 	});
