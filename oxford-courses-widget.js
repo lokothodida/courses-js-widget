@@ -16,18 +16,20 @@ THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS "AS IS" AND 
 
 (function($) {
   // load the scripts
+  var url = '';
+
   $('head').append(
-    '<script src="lib/dataTables/js/jquery.dataTables.min.js"></script>' +
-    '<script src="lib/moment/moment.min.js"></script>' +
-    '<script src="js/column.js"></script>' +
-    '<script src="js/parametersreader.js"></script>' +
-    '<script src="js/options.js"></script>' +
-    '<script src="js/widgetui.js"></script>' +
-    '<script src="js/oxdatacall.js"></script>' +
-    '<script src="js/responseparser.js"></script>' +
-    '<script src="js/tablebuilder.js"></script>' +
-    '<script src="js/globals.js"></script>' +
-    '<script src="js/row.js"></script>'
+    '<script src="' + url + 'lib/dataTables/js/jquery.dataTables.min.js"></script>' +
+    '<script src="' + url + 'lib/moment/moment.min.js"></script>' +
+    '<script src="' + url + 'js/column.js"></script>' +
+    '<script src="' + url + 'js/parametersreader.js"></script>' +
+    '<script src="' + url + 'js/options.js"></script>' +
+    '<script src="' + url + 'js/widgetui.js"></script>' +
+    '<script src="' + url + 'js/oxdatacall.js"></script>' +
+    '<script src="' + url + 'js/responseparser.js"></script>' +
+    '<script src="' + url + 'js/tablebuilder.js"></script>' +
+    '<script src="' + url + 'js/globals.js"></script>' +
+    '<script src="' + url + 'js/row.js"></script>'
   );
 })(jQuery);
 
