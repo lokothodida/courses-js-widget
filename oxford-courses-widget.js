@@ -15,47 +15,78 @@ THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS "AS IS" AND 
 */
 
 (function($) {
-  // load the scripts
-  var url = '';
+var url = ''; 'https://rawgit.com/lokothodida/courses-js-widget/dev/';
+var scripts = [
+  'https://cdn.datatables.net/1.10.2/js/jquery.dataTables.js',
+  url + 'lib/moment/moment.min.js',
+  url + 'js/column.js',
+  url + 'js/parametersreader.js',
+  url + 'js/options.js',
+  url + 'js/widgetui.js',
+  url + 'js/oxdatacall.js',
+  url + 'js/responseparser.js',
+  url + 'js/tablebuilder.js',
+  url + 'js/courses-widget.js',
+  url + 'js/row.js',
+];
+var loadedScripts = [];   // keep track of loaded scripts so they don't get loaded repeatedly
+var CSSLoaded = false;
+var scope = this;         // alias for IIF scope
 
-  $('head').append(
-    '<script src="' + url + 'lib/dataTables/js/jquery.dataTables.min.js"></script>' +
-    '<script src="' + url + 'lib/moment/moment.min.js"></script>' +
-    '<script src="' + url + 'js/column.js"></script>' +
-    '<script src="' + url + 'js/parametersreader.js"></script>' +
-    '<script src="' + url + 'js/options.js"></script>' +
-    '<script src="' + url + 'js/widgetui.js"></script>' +
-    '<script src="' + url + 'js/oxdatacall.js"></script>' +
-    '<script src="' + url + 'js/responseparser.js"></script>' +
-    '<script src="' + url + 'js/tablebuilder.js"></script>' +
-    '<script src="' + url + 'js/globals.js"></script>' +
-    '<script src="' + url + 'js/row.js"></script>'
-  );
-})(jQuery);
+// jQuery plugin
+$.fn.oxfordCoursesWidget = function(options) {
+  var settings = {};
+  var _this = this;
 
-(function($, moment, OxfordCoursesWidget) {
-  // bring globals into scope
-  for (i in OxfordCoursesWidget) {
-    var global = OxfordCoursesWidget[i];
-    window[i] = global;
-  }
+  var getScripts = function(scripts) {
+    //console.log(scriptsLoaded);
+    if (scripts.length) {
+      var scriptUrl = scripts.shift();
 
-  add_css("//static.data.ox.ac.uk/lib/DataTables/media/css/jquery.dataTables.css");
-  add_css("//static.data.ox.ac.uk/courses-js-widget/courses.css");
+      $.ajax({
+        url: scriptUrl,
+        async: false,
+        dataType: 'script',
+        success: function() {
+          getScripts(scripts);
+        },
+        error: function(a,b,c) {
+          throw 'Dependency "' + scriptUrl + '" failed to load';
+        },
+      });
+    } else {
+      // bring globals into scope
+      for (i in OxfordCoursesWidget) {
+        var global = OxfordCoursesWidget[i];
+        scope[i] = global;
+      }
 
-  // load the jQuery plugin
-  $.fn.oxfordCoursesWidget = function(options) {
-    var settings = $.extend({
-      dataTablesConfig: {}
-    }, options);
+      // load css
+      if (!CSSLoaded) {
+        add_css('https://static.data.ox.ac.uk/lib/DataTables/media/css/jquery.dataTables.css');
+        add_css('https://static.data.ox.ac.uk/courses-js-widget/courses.css');
+        CSSLoaded = true;
+      }
 
-    return this.each(function(i, e) {
-      setUp(e, settings.dataTablesConfig);
-    });
+      settings = $.extend({
+        dataTablesConfig: {}
+      }, options);
+
+      return _this.each(function(i, e) {
+        setUp(e, settings.dataTablesConfig);
+      });
+    }
   };
 
-  // run plugin on the containers
-  $(document).ready(function() {
-    $('.courses-widget-container').oxfordCoursesWidget();
-  });
-})(jQuery, moment, OxfordCoursesWidget);
+  return getScripts(scripts);
+};
+
+// now bind the functionality to the containers
+var bindToContainers = function() {
+  $('.courses-widget-container').oxfordCoursesWidget();
+};
+
+$(document).ready(bindToContainers);
+bindToContainers();
+
+})(jQuery);
