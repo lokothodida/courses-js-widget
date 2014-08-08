@@ -15,9 +15,10 @@ THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS "AS IS" AND 
 */
 
 (function($) {
-var url = ''; 'https://rawgit.com/lokothodida/courses-js-widget/dev/';
+// fix url to live url when deployed
+var url = 'https://rawgit.com/lokothodida/courses-js-widget/dev/';
 var scripts = [
-  'https://cdn.datatables.net/1.10.2/js/jquery.dataTables.js',
+  url + 'lib/dataTables/js/jquery.dataTables.min.js',
   url + 'lib/moment/moment.min.js',
   url + 'js/column.js',
   url + 'js/parametersreader.js',
