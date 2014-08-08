@@ -2,6 +2,11 @@ if (!window.OxfordCoursesWidget) {
   OxfordCoursesWidget = {};
 }
 
+if (!OxfordCoursesWidget.Column) {
+  OxfordCoursesWidget.Column = function() {
+  };
+}
+
 OxfordCoursesWidget.paddedValue = function(v) {
   if (v < 10 ) {
     v = "0"+v;
